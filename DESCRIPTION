@@ -7,11 +7,11 @@ Maintainer: Nathan Byers <natebyers@gmail.com>
 Description: Functions for key driver analysis of Net Promoter Score.
 Depends:
     R (>= 2.10)
-Imports: 
+Imports:
     dplyr, 
     broom, 
     MASS
-Suggests: 
+Suggests:
     GenOrd,
     testthat,
     caret,

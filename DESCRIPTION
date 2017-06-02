@@ -10,7 +10,8 @@ Depends:
 Imports:
     dplyr, 
     broom, 
-    MASS
+    MASS,
+    ggplot2
 Suggests:
     GenOrd,
     testthat,

@@ -101,6 +101,9 @@ scenario_transform <- function(df, scenario, type = c("simple", "redistribute"))
                            prob = distribution$proportion)
     df[[scenario$variable]][current_value_l] <- other_values
   }
+
+  class(df) <- c("NPSdriverScenarios", class(df))
+
   df
 }
 

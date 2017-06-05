@@ -51,6 +51,8 @@ run_scenarios <- function(model, scenarios = make_scenarios(model)) {
     left_join(output, "scenario") %>%
     mutate(scenario = factor(scenario))
 
+  class(scenario_table) <- c("NPSdriverScenarios", class(scenario_table))
+
   scenario_table
 }
 
@@ -101,8 +103,6 @@ scenario_transform <- function(df, scenario, type = c("simple", "redistribute"))
                            prob = distribution$proportion)
     df[[scenario$variable]][current_value_l] <- other_values
   }
-
-  class(df) <- c("NPSdriverScenarios", class(df))
 
   df
 }

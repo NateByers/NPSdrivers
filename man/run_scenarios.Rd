@@ -10,21 +10,23 @@ run_scenarios(model, scenarios = make_scenarios(model))
 \arguments{
 \item{model}{Model object from \code{model_survey()}}
 
-\item{scenarios}{A data frame of scenarios
+\item{scenarios}{A data frame of scenarios}
+}
+\description{
+Run different scenarios on the survey data based on the model output from
+\code{model_survey()}
+}
+\examples{
 library(NPS)
 library(NPSdrivers)
 library(dplyr)
 
 data(survey_sim)
 
-survey_sim <- survey_sim %>%
-  mutate(NPC = factor(npc(recommend), ordered = TRUE)) %>%
+survey_sim <- survey_sim \%>\%
+  mutate(NPC = factor(npc(recommend), ordered = TRUE)) \%>\%
   select(-recommend)
 
 m <- model_survey(survey_sim)
-scenario_results <- run_scenarios(m)}
-}
-\description{
-Run different scenarios on the survey data based on the model output from
-\code{model_survey()}
+scenario_results <- run_scenarios(m)
 }

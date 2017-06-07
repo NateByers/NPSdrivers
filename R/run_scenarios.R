@@ -3,6 +3,7 @@
 #' @export
 #' @param model Model object from \code{model_survey()}
 #' @param scenarios A data frame of scenarios
+#' @examples
 #' library(NPS)
 #' library(NPSdrivers)
 #' library(dplyr)

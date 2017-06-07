@@ -28,8 +28,7 @@ plot.NPSdriverScenarios <- function(x, NPS, ...) {
     ylab("expected_NPS") +
     geom_hline(aes(yintercept = NPS, linetype = "current"), color = 'black') +
     scale_linetype_manual(name = 'NPS', values = c(1),
-                          guide = guide_legend(override.aes = list(color = c('black')))) +
-    theme(axis.text.x=element_blank())
+                          guide = guide_legend(override.aes = list(color = c('black'))))
 
   p
 }

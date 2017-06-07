@@ -3,6 +3,7 @@
 #' @export
 #' @param x Output from \code{run_scenarios()}
 #' @param NPS The current NPS in the data
+#' @param scenarios Vector of scenarios to plot
 #' @param ... Parameters passed on to \code{aes()}
 #' @examples
 #' library(NPS)
@@ -19,7 +20,12 @@
 #' m <- model_survey(survey_sim)
 #' scenario_results <- run_scenarios(m)
 #' plot(scenario_results, NPS)
-plot.NPSdriverScenarios <- function(x, NPS, ...) {
+#' plot(scenario_results, NPS, c(1, 2, 5))
+plot.NPSdriverScenarios <- function(x, NPS, scenarios, ...) {
+
+  if(!missing(scenarios)) {
+    x <- x[x$scenario %in% scenarios, ]
+  }
 
   p <- ggplot(x, aes(color = opportunity, ...)) +
     geom_segment(aes(x = scenario, xend = scenario, y = NPS, yend = expected_NPS),

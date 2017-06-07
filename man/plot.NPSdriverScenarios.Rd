@@ -4,12 +4,14 @@
 \alias{plot.NPSdriverScenarios}
 \title{Plot NPS Driver Scenarios}
 \usage{
-\method{plot}{NPSdriverScenarios}(x, NPS, ...)
+\method{plot}{NPSdriverScenarios}(x, NPS, scenarios, ...)
 }
 \arguments{
 \item{x}{Output from \code{run_scenarios()}}
 
 \item{NPS}{The current NPS in the data}
+
+\item{scenarios}{Vector of scenarios to plot}
 
 \item{...}{Parameters passed on to \code{aes()}}
 }
@@ -31,4 +33,5 @@ survey_sim <- survey_sim \%>\%
 m <- model_survey(survey_sim)
 scenario_results <- run_scenarios(m)
 plot(scenario_results, NPS)
+plot(scenario_results, NPS, c(1, 2, 5))
 }

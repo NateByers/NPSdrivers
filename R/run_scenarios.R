@@ -50,6 +50,7 @@ run_scenarios <- function(model, scenarios = make_scenarios(model)) {
     dplyr::select(scenario, description) %>%
     distinct() %>%
     left_join(output, "scenario") %>%
+    arrange(scenario) %>%
     mutate(scenario = factor(scenario))
 
   class(scenario_table) <- c("NPSdriverScenarios", class(scenario_table))

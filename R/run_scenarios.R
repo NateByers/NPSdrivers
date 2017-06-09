@@ -1,8 +1,10 @@
 #' Run different scenarios on the survey data based on the model output from
 #' \code{model_survey()}
+#' @importFrom tidyr spread
 #' @export
 #' @param model Model object from \code{model_survey()}
 #' @param scenarios A data frame of scenarios
+#' @param variables_column Should the table output have a variables column
 #' @examples
 #' library(NPS)
 #' library(NPSdrivers)
@@ -16,7 +18,8 @@
 #'
 #' m <- model_survey(survey_sim)
 #' scenario_results <- run_scenarios(m)
-run_scenarios <- function(model, scenarios = make_scenarios(model)) {
+run_scenarios <- function(model, scenarios = make_scenarios(model),
+                          variables_column = FALSE) {
 
   scenario_table <- scenarios
   scenarios <- unique(scenarios$scenario)
@@ -45,18 +48,32 @@ run_scenarios <- function(model, scenarios = make_scenarios(model)) {
                                        opportunity = opportunity))
   }
 
-  scenario_table <- scenario_table %>%
-    filter(scenario %in% scenarios) %>%
-    dplyr::select(scenario, description) %>%
-    distinct() %>%
+  scenario_table_ <- scenario_table %>%
+    filter(scenario %in% scenarios)
+
+  if(variables_column) {
+    scenario_table_ <- scenario_table %>%
+      group_by(scenario) %>%
+      summarize(variables = paste(unique(variable), collapse = " "),
+                description = ifelse(grepl("change", unique(description)),
+                                     "change all answers to highest score",
+                                     "lose half of highest score answers")) %>%
+      ungroup()
+  } else {
+    scenario_table_ <- scenario_table %>%
+      dplyr::select(scenario, description) %>%
+      distinct()
+  }
+
+  scenario_table_ <- scenario_table_ %>%
     left_join(output, "scenario") %>%
     arrange(scenario) %>%
     mutate(scenario = factor(scenario),
            expected_NPS = round(expected_NPS, 3))
 
-  class(scenario_table) <- c("NPSdriverScenarios", class(scenario_table))
+  class(scenario_table_) <- c("NPSdriverScenarios", class(scenario_table_))
 
-  scenario_table
+  scenario_table_
 }
 
 get_opportunity <- function(df, scenario_table_) {

@@ -5,12 +5,15 @@
 \title{Run different scenarios on the survey data based on the model output from
 \code{model_survey()}}
 \usage{
-run_scenarios(model, scenarios = make_scenarios(model))
+run_scenarios(model, scenarios = make_scenarios(model),
+  variables_column = FALSE)
 }
 \arguments{
 \item{model}{Model object from \code{model_survey()}}
 
 \item{scenarios}{A data frame of scenarios}
+
+\item{variables_column}{Should the table output have a variables column}
 }
 \description{
 Run different scenarios on the survey data based on the model output from

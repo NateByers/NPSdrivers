@@ -11,7 +11,8 @@ Imports:
     dplyr, 
     broom, 
     MASS,
-    ggplot2
+    ggplot2,
+    tidyr
 Suggests:
     GenOrd,
     testthat,

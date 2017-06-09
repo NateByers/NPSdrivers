@@ -6,7 +6,7 @@
 \code{model_survey()}}
 \usage{
 run_scenarios(model, scenarios = make_scenarios(model),
-  variables_column = FALSE)
+  variables_column = FALSE, descending = TRUE)
 }
 \arguments{
 \item{model}{Model object from \code{model_survey()}}
@@ -14,6 +14,9 @@ run_scenarios(model, scenarios = make_scenarios(model),
 \item{scenarios}{A data frame of scenarios}
 
 \item{variables_column}{Should the table output have a variables column}
+
+\item{descending}{Should the table be in descending order by expected_NPS
+(scenarios will be renumbered)}
 }
 \description{
 Run different scenarios on the survey data based on the model output from

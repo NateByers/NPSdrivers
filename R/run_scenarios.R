@@ -5,6 +5,8 @@
 #' @param model Model object from \code{model_survey()}
 #' @param scenarios A data frame of scenarios
 #' @param variables_column Should the table output have a variables column
+#' @param descending Should the table be in descending order by expected_NPS
+#'  (scenarios will be renumbered)
 #' @examples
 #' library(NPS)
 #' library(NPSdrivers)
@@ -19,7 +21,7 @@
 #' m <- model_survey(survey_sim)
 #' scenario_results <- run_scenarios(m)
 run_scenarios <- function(model, scenarios = make_scenarios(model),
-                          variables_column = FALSE) {
+                          variables_column = FALSE, descending = TRUE) {
 
   scenario_table <- scenarios
   scenarios <- unique(scenarios$scenario)
@@ -66,8 +68,32 @@ run_scenarios <- function(model, scenarios = make_scenarios(model),
   }
 
   scenario_table_ <- scenario_table_ %>%
-    left_join(output, "scenario") %>%
-    arrange(scenario) %>%
+    left_join(output, "scenario")
+
+  if(descending) {
+    if(variables_column) {
+      scenario_table_ <- scenario_table_ %>%
+        group_by(scenario) %>%
+        mutate(group = ifelse(length(strsplit(variables, " ")[[1]]) == 1 & grepl("change", description), 1, NA),
+               group = ifelse(length(strsplit(variables, " ")[[1]]) == 2 & grepl("change", description), 2, group)) %>%
+        ungroup()
+    } else {
+      scenario_table_ <- scenario_table_ %>%
+        mutate(group = ifelse(!grepl("change.*and", description), 1, NA),
+               group = ifelse(grepl("change.*and", description), 2, group))
+    }
+    scenario_table_ <- scenario_table_ %>%
+      mutate(group = ifelse(grepl("lose", description), 3, group)) %>%
+      arrange(group, desc(expected_NPS)) %>%
+      mutate(scenario = row_number()) %>%
+      select(-group)
+  } else {
+    scenario_table_ <- scenario_table_ %>%
+      arrange(scenario)
+  }
+
+
+  scenario_table_ <- scenario_table_ %>%
     mutate(scenario = factor(scenario),
            expected_NPS = round(expected_NPS, 3))
 

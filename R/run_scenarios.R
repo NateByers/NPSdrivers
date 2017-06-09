@@ -51,7 +51,8 @@ run_scenarios <- function(model, scenarios = make_scenarios(model)) {
     distinct() %>%
     left_join(output, "scenario") %>%
     arrange(scenario) %>%
-    mutate(scenario = factor(scenario))
+    mutate(scenario = factor(scenario),
+           expected_NPS = round(expected_NPS, 3))
 
   class(scenario_table) <- c("NPSdriverScenarios", class(scenario_table))
 

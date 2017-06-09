@@ -27,11 +27,14 @@ plot.NPSdriverScenarios <- function(x, NPS, scenarios, ...) {
     x <- x[x$scenario %in% scenarios, ]
   }
 
+  x <- x %>%
+    mutate(expected_NPS = expected_NPS * 100)
+
   p <- ggplot(x, aes(color = opportunity, ...)) +
     geom_segment(aes(x = scenario, xend = scenario, y = NPS, yend = expected_NPS),
                  size = 15) +
     scale_color_gradient(labels = percent) +
-    ylab("expected_NPS") +
+    ylab("expected_NPS (%)") +
     geom_hline(aes(yintercept = NPS, linetype = "current"), color = 'black') +
     scale_linetype_manual(name = 'NPS', values = c(1),
                           guide = guide_legend(override.aes = list(color = c('black'))))

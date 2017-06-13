@@ -23,7 +23,7 @@ make_scenarios <- function(m, redistribution = 0.5) {
 
   levels_df <- data.frame()
   for(i in names(df)) {
-    levels_df_ <- data.frame(variable = i, level = c(levels(df[[i]]), "N/A"),
+    levels_df_ <- data.frame(variable = i, level = unique(c(levels(df[[i]]), "N/A")),
                             stringsAsFactors = FALSE) %>%
       mutate(order = row_number())
     levels_df_[grepl("NA|N/A", levels_df_$level), "order"] <- 0
@@ -64,7 +64,8 @@ make_scenarios <- function(m, redistribution = 0.5) {
   for(k in 1:length(unique(levels_df$variable))) {
     variable_ <- unique(levels_df$variable)[k]
     highest_value <- levels_df %>%
-      filter(variable == variable_, order == max(order))
+      filter(variable == variable_) %>%
+      filter(order == max(order))
 
     scenarios_ <- data.frame(scenario = max_scenario + k,
                              description = paste("lose half of the",

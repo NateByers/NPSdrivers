@@ -29,7 +29,7 @@ run_scenarios <- function(model, scenarios = make_scenarios(model),
 
   output <- data.frame()
   for(k in scenarios) {
-    # k <- scenarios[1]
+    # k <- scenarios[4]
     scenario_table_ <- scenario_table %>%
       filter(scenario == k)
 
@@ -103,18 +103,26 @@ run_scenarios <- function(model, scenarios = make_scenarios(model),
 }
 
 get_opportunity <- function(df, scenario_table_) {
+  # df <- data
   df_ <- df %>%
     mutate(id = row_number())
   ids <- c()
   for(m in unique(scenario_table_$variable)) {
-    # m = unique(scenario_table_$variable)[2]
+    # m = unique(scenario_table_$variable)[1]
     filter_df <- scenario_table_ %>%
       filter(variable == m)
     df_$current_value <- as.character(df_[[m]])
     df_ <- semi_join(df_, filter_df, c("current_value"))
     ids <- unique(c(ids, df_$id))
   }
-  round(length(ids)/dim(df)[1], 2)
+
+  opportunity <- round(length(ids)/dim(df)[1], 2)
+
+  if(grepl("redistribute", scenario_table_[["changed_value"]][1])) {
+    opportunity <- opportunity/2
+  }
+
+  opportunity
 }
 
 scenario_transform <- function(df, scenario, type = c("simple", "redistribute")) {

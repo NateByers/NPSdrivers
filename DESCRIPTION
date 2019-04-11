@@ -17,7 +17,8 @@ Suggests:
     GenOrd,
     testthat,
     caret,
-    NPS
+    NPS,
+    covr
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
